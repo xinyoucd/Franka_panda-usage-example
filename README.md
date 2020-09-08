@@ -1,14 +1,35 @@
 # Franka_panda-usage-example
 
+## 本手册使用说明
+
++ `本手册并不是一个完整的官方说明手册，而是一个`***经验使用手册***`;`
++ `本手册的目的时让开发者` ***快速的上手*** `使用franka_panda机械臂，并对相关的功能进行了一定的介绍；`
++ `本手册不会像官方的手册那样` **非常严谨** `，主要的目的让大家快速的上手这款机械臂；`
++ `后续的细节请参照` ***官方的文档*** `进行学习；`
+
+## Franka_panda 图片欣赏
+
+<img src="/image_view/Franka_Panda_179.png" width="300" /><img src="/image_view/Franka_Panda_176.png" width="300" /><img src="/image_view/Franka_Panda_175.png" width="300" />
+
+<img src="/image_view/Franka_Panda_145.png" width="300" /><img src="/image_view/Franka_Panda_113.png" width="300" /><img src="/image_view/Franka_Panda_112.png" width="300" />
+
 ## Franka_panda 机械臂欣赏
 
 + 展示一：
 
-<img src="/image_view/n4mdv-zjgjx.gif" width="900" />
+<center>
+
+<img src="/image_view/panda-power-tool.eebfa39.gif" width="1000" />
+
+</center>
 
 + 展示二：
 
-<img src="/image_view/intro.b081286.gif" width="900" />
+<center>
+
+<img src="/image_view/intro.b081286.gif" width="1000" />
+
+</center>
 
 ## 开箱说明
 
@@ -131,20 +152,10 @@
   sudo apt install build-essential cmake git libpoco-dev libeigen3-dev
   ```
 
-  + `找到一个适合自己的版本，从`**Github**`下载源码，并进入`**libfranka**`源文件夹,指令如下:`
+  + `首先将`***Source code***`文件夹里面的`***libfranka***`取出来放到`***home***`文件夹下面`
+  + `具体的编译源码的指令如下:`
   
   ```bash
-  git clone --recursive https://github.com/frankaemika/libfranka
-
-  # 进入libfranka源码目录
-  cd libfranka
-
-  # 选择相应的版本号
-  git checkout <version>
-
-  # 使源码与版本同步
-  git submodule update
-
   # 创建源码构建空间
   mkdir build
 
@@ -177,22 +188,11 @@
     catkin_make
     ```
 
-    + `准备下载源码：`
+    + `将提供的源码放到工作空间里面;`
+    + `编译源码的步骤如下:`
 
     ```bash
-
-    # 克隆github上的源码
-    # 在catkin_ws工作空间里面，并不是在catkin_ws/src目录下面
-    git clone --recursive https://github.com/frankaemika/franka_ros src/franka_ros
-
-    # 选择相应的ros版本
-    git checkout <version>
-
-    # 安装源码依赖
-    rosdep install --from-paths src --ignore-src --rosdistro kinetic -y --skip-keys libfranka
-
-    # 开始编译源码
-    # 注意/path/to/是自己的libfranka的绝对路径
+    #进入到工作空间
     catkin_make -DCMAKE_BUILD_TYPE=Release -DFranka_DIR:PATH=/path/to/libfranka/build
 
     # 刷星ros工作空间脚本
@@ -200,6 +200,7 @@
     ```
 
 + `编译`**real-time内核**
+  + `本节是以4.14.12内核为基础，不同的版本需要的内核不同，此处主要是演示内核的编译过程;`
   + `使用`**Franka_panda机械臂时,**`需要`**实时内核。**`这种方式和绝大多数使用`**ROS**`控制的机械臂有很多的不同。`**linux**`的`**实时内核**`的构建方法有多种`。`本教程使用的是`**Franka_panda官方**`提供的`*实时内核*`的编译方法:`
   + `查看当前系统的`**Linux内核*****版本***`，终端输入：`
   
@@ -207,7 +208,7 @@
   uname -r
   ```
   
-  + **终端**`会提示当前`**Linux内核的版本**`，在`**ubuntu16.04.6**`版本的系统在终端里面显示的内核版本为--->`**4.15.0-generic**`。终端界面显示的版本不是`**实时内核**`，需要自行安装编译`**实时内核**`。选择`**实时内核**`的版本没有什么推荐，``原则上使用一个与自己版本最接近的内核就好。如果担心`**内核奔溃**`，可以安装多个`**内核**`并在`**高级启动**`时自行切换。`
+  + **终端**`会提示当前`**Linux内核的版本**`，在`**ubuntu16.04.6**`版本的系统在终端里面显示的内核版本为--->`**4.15.0-generic**`。终端界面显示的版本不是`**实时内核**`，需要自行安装编译`**实时内核**`。选择`**实时内核**`的版本没有什么推荐，原则上使用一个与自己版本最接近的内核就好。如果担心`**内核奔溃**`，可以安装多个`**内核**`并在`**高级启动**`时自行切换。`
   + `内核的安装编译方法可参考`**Franka FCI**`手册，但是该方法在网络连接不畅时极其慢，不推荐使用。`
   + **注意：**
     + `选择`**实时内核**`版本时，不必选择与自带内核号一致的版本。也可以安装对应的其他的`**generic内核**。`有时候甚至可能出现在某一版本内核下编译出错，换一个内核却可以的情况。`
@@ -222,8 +223,11 @@
   curl -SLO https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.14.12.tar.xz
   curl -SLO https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.14.12.tar.sign
   curl -SLO https://www.kernel.org/pub/linux/kernel/projects/rt/4.14/older/patch-4.14.12-rt10.patch.xz
-  curl -SLO https://www.kernel.org/pub/linux/kernel/projects/rt/4.14/older/patch-4.14.12-rt10.patch.
+  curl -SLO https://www.kernel.org/pub/linux/kernel/projects/rt/4.14/older/patch-4.14.12-rt10.patch.xz
   ```
+
+  + **注意**：
+    + `此处下载极慢，最好使用一些加密协议`
 
   + **解压**`下载的相关文件`
 
@@ -257,6 +261,8 @@
   ```
 
   + `上面的`**步骤**`是为了校验实时内核的`**完整性**`;`
+  + `如果您对自己的网络比较自信可以忽略;`
+  + :joy::joy::joy:
   + **解压源码包**`，准备开始`**编译源码包**`，指令如下:`
 
   ```bash
@@ -483,7 +489,11 @@
   + [x] **ROS**`版本升级到`**Melodic**`;`
   + [x] **libfrank** `官方库编译测试通过;`
   + [x] **franka_panda** **ros通讯借口**`测试完成;`
-  + [ ] **real-time kernel**`未能编译通过,如果编译通过将会在第一时间将相关的内核包的编译过程放到相应的github上，请大家自行参照使用;或者，提供编译好的安装包给大家提供下载！`
-+ `尽请期待!`
-+ **:joy: :joy::joy:**
+  + [x] **real-time kernel**`编译通过，并提供相应的内核；`
+  + [x] `相关的`**源码整合包**`也在调试当中;`
 
+## 最后的声明
+
++ 此文档的源码是测试后的源码,只对购买我们公司产品的客户提供，其他人员不在我们的考虑范围之内;
++ 由于，不同的客户购买的批次不同，我们所提供的文件会有所不同;
++ 如果，想用最新的libfranka库,请将panda的固件刷到最新;
