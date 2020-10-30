@@ -171,6 +171,7 @@
 
 + **编译、构建** ***franka_ros*** `通讯接口`
   + `功能包安装`
+  + `此功能包不兼容源码编译，此步骤可以省略`
   
   ```bash
   sudo apt-get install ros-kinetic-franka-ros
